@@ -127,6 +127,54 @@ print(carbon_footprint_df[['Month', 'Electricity Carbon Footprint (kg CO₂)',
                             'Total Carbon Footprint (kg CO₂)']])
 
 
+import pandas as pd
+
+# Constants
+MAX_CF = 10000  # Maximum acceptable carbon footprint in kg
+MAX_INVESTMENT = 10000  # Maximum green investment in currency
+RENEWABLE_USAGE_MAX = 1.0  # Maximum renewable energy usage (100%)
+
+# Weights
+WEIGHT_CF = 0.33
+WEIGHT_INVESTMENT = 0.33
+WEIGHT_RENEWABLE = 0.34
+
+# Function to calculate Green Score
+def calculate_green_score(carbon_footprint, green_investment, renewable_energy_usage):
+    # Calculate contributions
+    cf_contribution = (MAX_CF - carbon_footprint) * WEIGHT_CF
+    investment_contribution = (green_investment) * WEIGHT_INVESTMENT
+    renewable_contribution = (renewable_energy_usage) * WEIGHT_RENEWABLE
+
+    # Calculate Green Score
+    green_score = cf_contribution + investment_contribution + renewable_contribution
+    
+    # Maximum possible score for normalization
+    max_score = (MAX_CF * WEIGHT_CF) + (MAX_INVESTMENT * WEIGHT_INVESTMENT) + (RENEWABLE_USAGE_MAX * WEIGHT_RENEWABLE)
+
+    # Normalize the Green Score
+    normalized_green_score = (green_score / max_score) * 100
+
+    return green_score, normalized_green_score
+
+# User inputs for Rohit
+rohit_carbon_footprint = 5000  # Carbon footprint in kg
+rohit_green_investment = 2000  # Green investment in currency
+rohit_renewable_energy_usage = 0.60  # Renewable energy usage as a fraction
+
+# Calculate Green Score for Rohit
+green_score, normalized_green_score = calculate_green_score(
+    rohit_carbon_footprint,
+    rohit_green_investment,
+    rohit_renewable_energy_usage
+)
+
+# Display the results
+print(f"Green Score: {green_score:.2f}")
+print(f"Normalized Green Score (0 to 100): {normalized_green_score:.2f}")
+
+
+
 
 
 
