@@ -9,72 +9,80 @@ However, despite the increasing demand for sustainability, financial institution
 
 import pandas as pd
 
-# Data for Electricity Bill (12 months)
-electricity_data = {
-    "Username": ["user_e1"] * 12,
-    "Month": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-    "Electricity Bill (₹)": [3500, 3400, 3700, 3600, 3900, 4100, 3800, 4000, 3950, 4300, 4500, 4200]
-}
+import pandas as pd
 
-# Data for Water Bill (12 months)
-water_data = {
-    "Username": ["user_w1"] * 12,
-    "Month": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-    "Water Bill (₹)": [800, 780, 790, 770, 810, 820, 750, 740, 760, 730, 800, 820]
-}
+# Function to create individual bill CSV files
+def create_bill_files(electricity_user, water_user, lpg_user):
+    # Data for Electricity Bill (12 months)
+    electricity_data = {
+        "Username": [electricity_user] * 12,  # Use the input username for electricity
+        "Month": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        "Electricity Bill (₹)": [3500, 3400, 3700, 3600, 3900, 4100, 3800, 4000, 3950, 4300, 4500, 4200]
+    }
 
-# Data for LPG Bill (12 months)
-lpg_data = {
-    "Username": ["user_l1"] * 12,
-    "Month": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-    "LPG Bill (₹)": [900, 920, 910, 930, 940, 950, 970, 990, 980, 960, 1000, 1050]
-}
+    # Data for Water Bill (12 months)
+    water_data = {
+        "Username": [water_user] * 12,  # Use the input username for water
+        "Month": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        "Water Bill (₹)": [800, 780, 790, 770, 810, 820, 750, 740, 760, 730, 800, 820]
+    }
 
-# Creating DataFrames
-electricity_df = pd.DataFrame(electricity_data)
-water_df = pd.DataFrame(water_data)
-lpg_df = pd.DataFrame(lpg_data)
+    # Data for LPG Bill (12 months)
+    lpg_data = {
+        "Username": [lpg_user] * 12,  # Use the input username for LPG
+        "Month": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+        "LPG Bill (₹)": [900, 920, 910, 930, 940, 950, 970, 990, 980, 960, 1000, 1050]
+    }
 
-# Saving DataFrames to CSV files
-electricity_df.to_csv('/content/electricity_bills.csv', index=False)
-water_df.to_csv('/content/water_bills.csv', index=False)
-lpg_df.to_csv('/content/lpg_bills.csv', index=False)
+    # Creating DataFrames
+    electricity_df = pd.DataFrame(electricity_data)
+    water_df = pd.DataFrame(water_data)
+    lpg_df = pd.DataFrame(lpg_data)
 
-# Function to display bills for a given username
-def display_bills(electricity_username, water_username, lpg_username):
-    # Filter DataFrames based on the usernames
-    electricity_bills = electricity_df[electricity_df["Username"] == electricity_username]
-    water_bills = water_df[water_df["Username"] == water_username]
-    lpg_bills = lpg_df[lpg_df["Username"] == lpg_username]
+    # Saving individual DataFrames to CSV files
+    electricity_df.to_csv(f'/content/electricity_bill_{electricity_user}.csv', index=False)
+    water_df.to_csv(f'/content/water_bill_{water_user}.csv', index=False)
+    lpg_df.to_csv(f'/content/lpg_bill_{lpg_user}.csv', index=False)
 
-    # Check if any bills exist for the electricity username and print them
-    if not electricity_bills.empty:
-        print("\nElectricity Bills for", electricity_username)
-        print(electricity_bills)
-    else:
-        print(f"\nNo electricity bills found for {electricity_username}.")
+    print("Individual bill files created for respective users.")
 
-    # Check if any bills exist for the water username and print them
-    if not water_bills.empty:
-        print("\nWater Bills for", water_username)
-        print(water_bills)
-    else:
-        print(f"\nNo water bills found for {water_username}.")
+# Function to create combined CSV file
+def create_combined_file(electricity_user, water_user, lpg_user):
+    # Load individual bill DataFrames
+    electricity_df = pd.read_csv(f'/content/electricity_bill_{electricity_user}.csv')
+    water_df = pd.read_csv(f'/content/water_bill_{water_user}.csv')
+    lpg_df = pd.read_csv(f'/content/lpg_bill_{lpg_user}.csv')
 
-    # Check if any bills exist for the LPG username and print them
-    if not lpg_bills.empty:
-        print("\nLPG Bills for", lpg_username)
-        print(lpg_bills)
-    else:
-        print(f"\nNo LPG bills found for {lpg_username}.")
+    # Merging DataFrames based on Month
+    combined_df = pd.merge(electricity_df, water_df, on=["Month"], suffixes=('_Electricity', '_Water'))
+    combined_df = pd.merge(combined_df, lpg_df, on=["Month"])
 
-# Prompting user for usernames
-electricity_username_input = input("Enter the username for Electricity Bills: ")
-water_username_input = input("Enter the username for Water Bills: ")
-lpg_username_input = input("Enter the username for LPG Bills: ")
+    # Saving the combined DataFrame to a CSV file
+    combined_df.to_csv(f'/content/combined_bills_{lpg_user}.csv', index=False)
 
-# Displaying bills for the entered usernames
-display_bills(electricity_username_input, water_username_input, lpg_username_input)
+    print("Combined bill file created.")
+
+    return combined_df
+
+# Main execution flow
+# Prompt for individual usernames
+electricity_username = input("Enter the username for Electricity Bill (e.g., user_e1): ")
+water_username = input("Enter the username for Water Bill (e.g., user_w1): ")
+lpg_username = input("Enter the username for LPG Bill (e.g., user_l1): ")
+
+# Create individual bill files
+create_bill_files(electricity_username, water_username, lpg_username)
+
+# Prompt for the username to create the combined file
+combined_username = input("Enter the username for the combined file (e.g., rohit): ")
+
+# Create combined file
+combined_file = create_combined_file(electricity_username, water_username, lpg_username)
+
+# Display the combined bills
+print("\nCombined Bills DataFrame:")
+print(combined_file)
+
 
 
 
