@@ -83,6 +83,50 @@ combined_file = create_combined_file(electricity_username, water_username, lpg_u
 print("\nCombined Bills DataFrame:")
 print(combined_file)
 
+# Function to calculate carbon footprint
+def calculate_carbon_footprint(combined_file_path):
+    # Load the combined bills DataFrame
+    combined_df = pd.read_csv(combined_file_path)
+
+    # Assuming the following factors for calculation
+    electricity_factor = 0.92  # kg CO₂ per kWh
+    water_factor = 0.0005  # kg CO₂ per liter
+    lpg_factor = 3.01  # kg CO₂ per kg
+
+    # Calculate the carbon footprint for each month
+    combined_df['Electricity Carbon Footprint (kg CO₂)'] = combined_df['Electricity Bill (₹)'] * electricity_factor
+    combined_df['Water Carbon Footprint (kg CO₂)'] = combined_df['Water Bill (₹)'] * water_factor * 1000  # Assuming bill amount is in liters
+    combined_df['LPG Carbon Footprint (kg CO₂)'] = combined_df['LPG Bill (₹)'] * lpg_factor  # Assuming bill amount is in kg
+
+    # Total Carbon Footprint
+    combined_df['Total Carbon Footprint (kg CO₂)'] = (combined_df['Electricity Carbon Footprint (kg CO₂)'] +
+                                                        combined_df['Water Carbon Footprint (kg CO₂)'] +
+                                                        combined_df['LPG Carbon Footprint (kg CO₂)'])
+
+    # Save the carbon footprint data to a new CSV file
+    carbon_footprint_file_path = '/content/carbon_footprint.csv'
+    combined_df[['Month', 'Electricity Carbon Footprint (kg CO₂)', 
+                  'Water Carbon Footprint (kg CO₂)', 
+                  'LPG Carbon Footprint (kg CO₂)', 
+                  'Total Carbon Footprint (kg CO₂)']].to_csv(carbon_footprint_file_path, index=False)
+
+    print(f"Carbon footprint data saved to {carbon_footprint_file_path}")
+    return combined_df
+
+# Main execution flow
+combined_file_path = '/content/combined_bills_user_l1.csv'  # Assuming you saved the combined file with this name
+
+# Calculate carbon footprint and get the DataFrame
+carbon_footprint_df = calculate_carbon_footprint(combined_file_path)
+
+# Display the carbon footprint DataFrame
+print("\nCarbon Footprint DataFrame:")
+print(carbon_footprint_df[['Month', 'Electricity Carbon Footprint (kg CO₂)', 
+                            'Water Carbon Footprint (kg CO₂)', 
+                            'LPG Carbon Footprint (kg CO₂)', 
+                            'Total Carbon Footprint (kg CO₂)']])
+
+
 
 
 
