@@ -234,3 +234,43 @@ However, despite the increasing demand for sustainability, financial institution
 
 </html>
 
+
+calulation of carbonfoot print 
+import pandas as pd
+
+# Conversion rates
+electricity_rate = 7  # ₹ per kWh
+water_rate = 20  # ₹ per 1000 liters
+lpg_rate = 50  # ₹ per kg of LPG
+
+# Carbon emission factors
+electricity_emission_factor = 0.713  # kg CO2 per kWh
+water_emission_factor = 0.001  # kg CO2 per liter
+lpg_emission_factor = 2.95  # kg CO2 per kg of LPG
+
+def calculate_carbon_footprint(row):
+    # Calculate consumption
+    electricity_consumption = row['Electricity Bill (₹)'] / electricity_rate  # in kWh
+    water_consumption = (row['Water Bill (₹)'] / water_rate) * 1000  # in liters
+    lpg_consumption = row['LPG Gas Bill (₹)'] / lpg_rate  # in kg
+    
+    # Calculate carbon footprint
+    electricity_footprint = electricity_consumption * electricity_emission_factor  # in kg CO2
+    water_footprint = water_consumption * water_emission_factor  # in kg CO2
+    lpg_footprint = lpg_consumption * lpg_emission_factor  # in kg CO2
+    
+    # Total carbon footprint
+    total_footprint = electricity_footprint + water_footprint + lpg_footprint
+    return total_footprint
+
+# Load the dataset
+df = pd.read_csv('/content/user_bills_with_electricity.csv')
+
+# Calculate carbon footprint for each row
+df['Carbon Footprint (kg CO2)'] = df.apply(calculate_carbon_footprint, axis=1)
+
+# Display the result
+print(df[['K-number', 'Month', 'Carbon Footprint (kg CO2)']])
+
+# Save the results to a new CSV file
+df.to_csv('user_carbon_footprints.csv', index=False)
